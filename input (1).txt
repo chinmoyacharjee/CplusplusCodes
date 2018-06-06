@@ -1,8 +1,0 @@
-1
-4
-a
-b
-cab
-CVB
-1
-a b c a b cvb
