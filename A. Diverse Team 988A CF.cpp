@@ -15,11 +15,33 @@ void file(bool ok){
 
 int main(){
 
-    file(true);
+    file(false);
+    
     set <int> x;
-    x.insert(5);
-    x.insert(2);
-    cout<<x[0]<<endl;
+    set<int>::iterator it;
+    int n, k;
+    scanf("%d%d", &n,&k);
+    int arr[101];
+    for(int i=0;i<n;i++){
+    	int val;
+    	scanf("%d", &val);
+    	arr[val] = i+1;
+    	x.insert(val);
+    }
+    if(x.size()<k){
+    	printf("NO\n");
+    }else{
+    	printf("YES\n");
+    	printf("size: %d\n",x.size());
+    	int i=0;
+    	for (it=x.begin(); it!=x.end(), i < k;  ++it){
+    		int z = arr[*it];
+    		printf("%d ", z);
+    		i++;
+    	}
+    	printf("\n");
+    	   
+    }
 
 	return 0;
 }
