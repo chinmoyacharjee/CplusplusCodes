@@ -32,7 +32,7 @@ int main(){
     	printf("NO\n");
     }else{
     	printf("YES\n");
-    	printf("size: %d\n",x.size());
+    	// printf("size: %d\n",x.size());
     	int i=0;
     	for (it=x.begin(); it!=x.end(), i < k;  ++it){
     		int z = arr[*it];
