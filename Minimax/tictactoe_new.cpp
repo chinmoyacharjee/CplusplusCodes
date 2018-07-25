@@ -138,51 +138,83 @@ void print_board(int board[9]){
 	cout<<endl;
 }
 
-// int find_max(int board[9]){
 
-// }
-
-
-int find_max(int board[9]){
+int generate_move(int board[9], bool turn){
 	int temp = determine_winner(board);
-	if(temp==1) return +10;
-	if(temp==0) return -10;
+	if(temp==1) return 10;
+	if(temp==0) return 10;
 	if(is_board_empty(board)==false) return 0;
 
-	int best = -10000;
+	if(turn){	
+		int best = -10000;
 
-	for(int i=0;i<9;i++){
-		if(board[i]==-1){
-			board[i] = 1;
-			best = max(best, find_min(board));
-			board[i] = -1;
+		for(int i=0;i<9;i++){
+			if(board[i]==-1){
+				board[i] = 1;
+				best = max(best, generate_move(board, !turn));
+				board[i] = -1;
+			}
 		}
+		return best;
 	}
-	return best;
+	else{
+		int best = 10000;
+
+		for(int i=0;i<9;i++){
+			if(board[i]==-1){
+				board[i] = 0;
+				best = min(best,  generate_move(board, turn));
+				board[i] = -1;
+			}
+		}
+		return best;
+	}
 }
 
-int find_min(int board[9]){
-	int temp = determine_winner(board);
 
-	if(temp==1) return +10;
-	if(temp==0) return -10;
-	if(is_board_empty(board)==false){
-		cout<<"called"<<endl;
-		return 0;
-	}
 
-	int best = 10000;
 
-	for(int i=0;i<9;i++){
-		if(board[i]==-1){
-			board[i] = 0;
-			best = min(best, find_max(board));
-			board[i] = -1;
-		}
-	}
-	return best;
 
-}
+// int find_max(int board[9]){
+// 	int temp = determine_winner(board);
+// 	if(temp==1) return +10;
+// 	if(temp==0) return -10;
+// 	if(is_board_empty(board)==false) return 0;
+
+// 	int best = -10000;
+
+// 	for(int i=0;i<9;i++){
+// 		if(board[i]==-1){
+// 			board[i] = 1;
+// 			best = max(best, find_min(board));
+// 			board[i] = -1;
+// 		}
+// 	}
+// 	return best;
+// }
+
+// int find_min(int board[9]){
+// 	int temp = determine_winner(board);
+
+// 	if(temp==1) return +10;
+// 	if(temp==0) return -10;
+// 	if(is_board_empty(board)==false){
+// 		cout<<"called"<<endl;
+// 		return 0;
+// 	}
+
+// 	int best = 10000;
+
+// 	for(int i=0;i<9;i++){
+// 		if(board[i]==-1){
+// 			board[i] = 0;
+// 			best = min(best, find_max(board));
+// 			board[i] = -1;
+// 		}
+// 	}
+// 	return best;
+
+// }
 
 
 void find_best_move(int *board){
@@ -192,7 +224,7 @@ void find_best_move(int *board){
 		if(board[i]==-1){
 			board[i] = 1;
 			print_board(board);
-			int best_value = find_min(board); 
+			int best_value = generate_move(board, false); 
 			cout<<"best val : "<<best_value<<endl;
 			if(best_value > max_val){
 				optimum_cell = i;
@@ -208,7 +240,12 @@ void find_best_move(int *board){
 
 int main(){
 	
-	int board[] = {-1, -1, 0, -1, 0, -1, -1, -1, -1};
+	int board[] = 
+	{
+		-1, -1, 1, 
+		-1,  1, -1, 
+		-1, -1, -1
+	};
 	print_board(board);
 	find_best_move(board);
 	return 0;

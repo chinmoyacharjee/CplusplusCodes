@@ -3,6 +3,12 @@ using namespace std;
 int find_max(char board[3][3], bool isMax);
 int find_min(char board[3][3]);
 
+
+
+struct Move{
+    int row, col;
+};
+
 int evaluate(char b[3][3]){
     char player = 'X';
     char opponent = 'O';
@@ -76,23 +82,18 @@ bool isMovesLeft(char board[3][3]){
     return false;
 }
 
-int find_max(char board[3][3], bool isMax){
+int find_max(char board[3][3], bool isMax, int &step){
     
     int score = evaluate(board);
     
     if (score == 10)
-        return 10;
+        return score-step;
  
     if (score == -10)
-        return score;
+        return score+step;
  
     if (isMovesLeft(board)==false)
         return 0;
-
-
-    
-    
-    
 
     if(isMax){
     // Traverse all cells
@@ -106,7 +107,7 @@ int find_max(char board[3][3], bool isMax){
         
                     // Call minimax recursively and choose
                     // the maximum value
-                    best = max(best, find_max(board, !isMax));
+                    best = max(best, find_max(board, !isMax, ++step));
         
                     // Undo the move
                     board[i][j] = '-';
@@ -127,7 +128,7 @@ int find_max(char board[3][3], bool isMax){
         
                     // Call minimax recursively and choose
                     // the minimum value
-                    best = min(best, find_max(board, isMax));
+                    best = min(best, find_max(board, isMax, ++step));
         
                     // Undo the move
                     board[i][j] = '-';
@@ -173,10 +174,13 @@ int find_min(char board[3][3]){
 }
 
 
-void findBestMove(char board[3][3]){
-
+Move findBestMove(char board[3][3]){
+    Move bestMove;
+    bestMove.row = -1;
+    bestMove.col = -1;
+ 
     int bestVal = -1000;
-    int row, col;
+    
 
     for (int i = 0; i<3; i++){
 
@@ -185,36 +189,145 @@ void findBestMove(char board[3][3]){
             if (board[i][j]=='-'){
                 
                 board[i][j] = 'X';
-                print_board(board);
+                // print_board(board);
+                int step = 0;
 
-                int moveVal = find_max(board, false);
-                cout<<moveVal<<endl;
+                int moveVal = find_max(board, false, step);
+                cout<<"Move "<<i<<j<<" Value:"<<moveVal<<" step: "<<step<<endl;
                 // Undo the move
                 board[i][j] = '-';
- 
+                
+
+
+
                 if (moveVal > bestVal){
 
-                    row = i;
-                    col = j;
+                    bestMove.row = i;
+                    bestMove.col = j;
                     bestVal = moveVal;
                 }
             }
         }
     }
+    return bestMove;
  
-    printf("The value of the best Move is : %d\n\n",
-            bestVal);
-    printf("The Optimal Move is :\n");
-    printf("ROW: %d COL: %d\n\n", row, col );
- 
+    // printf("The value of the best Move is : %d\n\n",
+    //         bestVal);
+    // printf("The Optimal Move is :\n");
+    // printf("ROW: %d COL: %d\n\n", row, col );
+    
+}
+
+Move random_move(char board[3][3]){
+    srand(time(NULL));
+    Move random_move;
+    while(true){
+        int i = rand()%3;
+        int j = rand()%3;
+
+        if(board[i][j]=='-'){
+            random_move.row = i;
+            random_move.col = j;
+
+            return random_move;
+        }
     }
+}
+
+Move get_human_move(char board[3][3]){
+    Move human_move;
+    while(true){
+        int i;
+        int j;
+        cout<<"row col:";
+        cin>>i>>j;
+        
+        if(board[i][j]=='-'){
+            human_move.row = i;
+            human_move.col = j;
+
+            return human_move;
+        }
+        else{
+            cout<<"Enter Valid Input"<<endl;
+        }
+    }
+}
+
+
+int play(char board[3][3]){
+    
+    char player_cpu = 'X';
+    char player_human = 'O';
+    char player = player_cpu;
+
+    int rand_count = 0;
+
+    Move move;
+
+    while(true){
+
+        
+
+        
+        if(player == player_cpu){
+            if(rand_count<2){
+                move = random_move(board);
+                board[move.row][move.col] = player_cpu;
+                rand_count++;
+            }
+            else{
+                move = findBestMove(board);
+                board[move.row][move.col] = player_cpu;
+            }
+            player = player_human;
+        }
+        else if(player == player_human){
+            move = get_human_move(board);
+            board[move.row][move.col] = player_human;
+            player = player_cpu;
+        }
+
+        print_board(board);
+
+        int score = evaluate(board);
+    
+        if (score == 10)
+            return 10;
+     
+        if (score == -10)
+            return score;
+     
+        if (isMovesLeft(board)==false)
+            return 0;
+        }
+        
+
+}
+
+
 int main(){
     char board[3][3]={
-        {'-', 'X', '-'},
-        {'O', 'X', '-'},
-        {'O', '-', '-'}
+        {'-', '-', '-'},
+        {'-', '-', '-'},
+        {'-', '-', '-'}
     };
+
     print_board(board);
-    findBestMove(board);
+    
+    int winner = play(board);
+    if(winner == 10) cout<<"Cpu Won"<<endl;
+    else if(winner == -10) cout<<"You Won"<<endl;
+    else{
+        cout<<"It is tie"<<endl;
+    }
+
+    // char board[3][3]={
+    //     {'-', '-', 'X'},
+    //     {'-', 'X', '-'},
+    //     {'-', '-', '-'}
+    // };
+    // print_board(board);
+    // findBestMove(board);
 
 }

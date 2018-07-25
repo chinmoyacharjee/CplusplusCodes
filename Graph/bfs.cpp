@@ -20,8 +20,8 @@ void bfs(int *distance, int *visited){
 
 	queue<int> nodes;
 	
-	memset(visited, -1, sizeof(visited[0]));
-	memset(distance, -1, sizeof(distance[0]));
+	memset(visited, -1, sizeof(visited));
+	memset(distance, -1, sizeof(distance));
 	
 	nodes.push(1);
 	distance[1] = 0;

@@ -3,26 +3,20 @@
 #include<vector>
 
 using namespace std;
-#define MAX 100000 //maximum node
-vector<int>edges[MAX];
-map<int, int> m;
-//vector<int>cost[MAX]; //parallel vector to store costs;
 
 void file(bool printInFile){
     freopen("input.txt","r",stdin);
     if(printInFile)
         freopen("output.txt","w",stdout);
 }
+
+void b(int **arr){
+
+}
+
 int main(){
-	 
-	 map<string, vector<string>  > m;
-	 vector<string> v;
-	 v.push_back("b");
-	 v.push_back("baa");
-
-	 m["a"] = v;
-
-	 cout<<m["a"].size()<<endl;
+	int arr[2][3] ={{2,3,4},{2,3,4}};
+	b(arr);
 
 
 	return 0;
