@@ -321,13 +321,4 @@ int main(){
     else{
         cout<<"It is tie"<<endl;
     }
-
-    // char board[3][3]={
-    //     {'-', '-', 'X'},
-    //     {'-', 'X', '-'},
-    //     {'-', '-', '-'}
-    // };
-    // print_board(board);
-    // findBestMove(board);
-
 }

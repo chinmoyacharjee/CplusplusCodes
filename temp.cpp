@@ -10,7 +10,7 @@ void file(bool printInFile){
         freopen("output.txt","w",stdout);
 }
 
-void b(int **arr){
+void b(int arr){
 
 }
 
