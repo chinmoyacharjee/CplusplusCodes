@@ -117,7 +117,7 @@ void print_board(char board[rc][rc]){
     }cout<<endl<<endl;
 }
 
-int find_max(char board[rc][rc], bool isMax, int &step, int &alpha, int &beta){
+int find_max(char board[rc][rc], bool isMax, int &step, int alpha, int beta){
     
     int score = evaluate(board);
 
@@ -144,7 +144,9 @@ int find_max(char board[rc][rc], bool isMax, int &step, int &alpha, int &beta){
                     best = max(best, find_max(board, !isMax, ++step, alpha, beta));
                     alpha = max(best, alpha);
                     board[i][j] = '-';
-                    
+
+                    if(beta <= alpha)
+                        return best;
                     
                 }
             }
@@ -162,7 +164,9 @@ int find_max(char board[rc][rc], bool isMax, int &step, int &alpha, int &beta){
                     beta = min(best, beta);
 
                     board[i][j] = '-';
-                    
+
+                    if(beta <= alpha)
+                        return best;
                     
                 }
             }

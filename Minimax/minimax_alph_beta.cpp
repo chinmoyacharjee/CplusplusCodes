@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int minimax(int depth, int nodeIndex, bool isMax, int scores[], int h, int &step, int &alpha, int &beta)
+int minimax(int depth, int nodeIndex, bool isMax, int scores[], int h, int &step, int alpha, int beta)
 {
     cout<< " depth: " << depth << " nodeIndex: " << nodeIndex << endl;
 
@@ -16,7 +16,7 @@ int minimax(int depth, int nodeIndex, bool isMax, int scores[], int h, int &step
             best = max(best, minimax(depth+1, nodeIndex*2 + i, false, scores, h, ++step, alpha, beta));
             alpha = max(best, alpha);
             if(beta <= alpha)
-                break;
+                return best;
         }
 
         return best; 
@@ -28,8 +28,8 @@ int minimax(int depth, int nodeIndex, bool isMax, int scores[], int h, int &step
         for(int i=0; i<2; i++){
             best = min(best, minimax(depth+1, nodeIndex*2 + i, true, scores, h, ++step, alpha, beta));
             beta = min(best, beta);
-            if(beta >= alpha)
-                break;
+            if(beta <= alpha)
+                return best;
         }
 
         return best;
